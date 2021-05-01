@@ -42,7 +42,7 @@ class Play extends Phaser.Scene {
 
     create(){
         
-        this.cursor = 0;
+        this.cursor = 2;
         this.score = 0;
         this.speedUp = false;
 
@@ -93,20 +93,21 @@ class Play extends Phaser.Scene {
         
         this.floor = this.add.tileSprite(0, 0, 480, 640, 'background').setOrigin(0,0);
         
-        //this.main = new Mouse(this, 240, 320, 'mouse');
+        let coordinator = [40, 136, 243, 347, 442];
 
         this.main = this.physics.add.sprite(243,100, 'mouse').setOrigin(0.5);
+        
         this.main.anims.play('walk', 30, true);
 
     
-        this.Cheese = new Obstacle(this, Phaser.Math.Between(0, 480), -640, 'badCheese', 0);
-        this.Cheese2 = new Obstacle(this, Phaser.Math.Between(0, 480), -640, 'badCheese', 0);
+        this.Cheese = new Obstacle(this, coordinator[Phaser.Math.Between(0, 4)], -640, 'badCheese', 0);
+        this.Cheese2 = new Obstacle(this, coordinator[Phaser.Math.Between(0, 4)], -640, 'badCheese', 0);
 
         this.goodCheese = new Food(this, this.trackDiff(), this.Cheese2.y + this.Cheese.y + this.trackDiff(), 'goodCheese', 0);
         this.goodCheese2 = new Food(this, this.trackDiff(), this.Cheese2.y + this.Cheese.y + this.trackDiff(), 'goodCheese', 0);
         this.goodCheese3 = new Food(this, this.trackDiff(), this.Cheese2.y + this.Cheese.y + this.trackDiff(), 'goodCheese', 0);
 
-        this.trap = new Obstacle(this, Phaser.Math.Between(0, 480), -640, 'trap', 0);
+        this.trap = new Obstacle(this, coordinator[Phaser.Math.Between(0, 4)], -640, 'trap', 0);
 
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -114,8 +115,6 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
         this.loopBackground();
-
-        this.spawnAt();
 
         let textConfig = {
             fontFamily: 'Courier',
@@ -143,6 +142,7 @@ class Play extends Phaser.Scene {
               this.time.delayedCall(700, ()=>{this.lol.destroy();});
           });
          
+          this.add.text(600, 480, 'use <- or -> to go left');
 
     }
 
@@ -157,9 +157,9 @@ class Play extends Phaser.Scene {
 
         if(this.speedUp == true){
             this.floor.tilePositionY -= 10;
-            this.goodCheese.moveSpeed = 6;
-            this.goodCheese2.moveSpeed = 8;
-            this.goodCheese3.moveSpeed = 5;
+            this.goodCheese.moveSpeed = Phaser.Math.Between(4, 10);
+            this.goodCheese2.moveSpeed = Phaser.Math.Between(1, 3);
+            this.goodCheese3.moveSpeed = Phaser.Math.Between(12, 20);
         } else {
             this.floor.tilePositionY -= 4;
 
@@ -338,7 +338,7 @@ class Play extends Phaser.Scene {
 
         let coordinator = [40, 136, 243, 347, 442];
 
-        
+        //switching tracks
         if(keyDOWN.isDown){
             this.main.y += 4;
         } else if(keyUP.isDown){
@@ -362,19 +362,19 @@ class Play extends Phaser.Scene {
         }
 
 
-        if(keyDOWN.isDown && keyLEFT.isDown){
-            this.main.y += 1;
-            this.main.x -= 4;
-        } else if(keyUP.isDown && keyLEFT.isDown){
-            this.main.y -= 1;
-            this.main.x -= 4;
-        } else if(keyUP.isDown && keyRIGHT.isDown){
-            this.main.y -= 1;
-            this.main.x += 4;
-        } else if(keyDOWN.isDown && keyRIGHT.isDown){
-            this.main.y += 1;
-            this.main.x += 4;
-        }
+        // if(keyDOWN.isDown && keyLEFT.isDown){
+        //     this.main.y += 1;
+        //     this.main.x -= 4;
+        // } else if(keyUP.isDown && keyLEFT.isDown){
+        //     this.main.y -= 1;
+        //     this.main.x -= 4;
+        // } else if(keyUP.isDown && keyRIGHT.isDown){
+        //     this.main.y -= 1;
+        //     this.main.x += 4;
+        // } else if(keyDOWN.isDown && keyRIGHT.isDown){
+        //     this.main.y += 1;
+        //     this.main.x += 4;
+        // }
 
         //coordinator;
     }
