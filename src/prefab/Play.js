@@ -41,8 +41,11 @@ class Play extends Phaser.Scene {
     }
 
     create(){
+        
+        this.cursor = 0;
         this.score = 0;
         this.speedUp = false;
+
         let titleConfig = {
             fontFamily: 'Noteworthy',
             fontSize:'15px',
@@ -92,17 +95,17 @@ class Play extends Phaser.Scene {
         
         //this.main = new Mouse(this, 240, 320, 'mouse');
 
-        this.main = this.physics.add.sprite(200,100, 'mouse');
+        this.main = this.physics.add.sprite(243,100, 'mouse').setOrigin(0.5);
         this.main.anims.play('walk', 30, true);
 
-        this.goodCheese = new Food(this, Phaser.Math.Between(0, 100), -320, 'goodCheese', 0);
-        this.goodCheese2 = new Food(this, Phaser.Math.Between(140, 240), -320, 'goodCheese', 0);
-        this.goodCheese3 = new Food(this, Phaser.Math.Between(360, 480), -320, 'goodCheese', 0);
-        
-
+    
         this.Cheese = new Obstacle(this, Phaser.Math.Between(0, 480), -640, 'badCheese', 0);
         this.Cheese2 = new Obstacle(this, Phaser.Math.Between(0, 480), -640, 'badCheese', 0);
-        
+
+        this.goodCheese = new Food(this, this.trackDiff(), this.Cheese2.y + this.Cheese.y + this.trackDiff(), 'goodCheese', 0);
+        this.goodCheese2 = new Food(this, this.trackDiff(), this.Cheese2.y + this.Cheese.y + this.trackDiff(), 'goodCheese', 0);
+        this.goodCheese3 = new Food(this, this.trackDiff(), this.Cheese2.y + this.Cheese.y + this.trackDiff(), 'goodCheese', 0);
+
         this.trap = new Obstacle(this, Phaser.Math.Between(0, 480), -640, 'trap', 0);
 
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -146,6 +149,7 @@ class Play extends Phaser.Scene {
     update(){
         
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
+            this.music.stop();
             this.scene.restart();
         }
         
@@ -331,16 +335,32 @@ class Play extends Phaser.Scene {
     }
 
     controlMain(){
+
+        let coordinator = [40, 136, 243, 347, 442];
+
         
         if(keyDOWN.isDown){
             this.main.y += 4;
         } else if(keyUP.isDown){
             this.main.y -= 4;
-        } else if(keyLEFT.isDown){
-            this.main.x -= 4;
-        } else if(keyRIGHT.isDown){
-            this.main.x += 4;
+        } else if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
+            if(this.cursor == 0){
+                this.cursor = 0;        
+            } else {
+                this.cursor--;
+            }
+            console.log(this.cursor);
+            this.main.x = coordinator[this.cursor];
+        } else if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
+            if(this.cursor == 4){
+                this.curosr = 4;        
+            } else {
+                this.cursor++;
+            }
+            console.log(this.cursor);
+            this.main.x = coordinator[this.cursor];
         }
+
 
         if(keyDOWN.isDown && keyLEFT.isDown){
             this.main.y += 1;
@@ -355,6 +375,8 @@ class Play extends Phaser.Scene {
             this.main.y += 1;
             this.main.x += 4;
         }
+
+        //coordinator;
     }
 
     scoreUpdate(x){
@@ -362,4 +384,11 @@ class Play extends Phaser.Scene {
         this.score += x;
         this.scoreBoard = this.add.text(0, 0, this.score, this.scoreConfig);
     }
+
+    trackDiff(){
+        let coordinator = [40, 136, 243, 347, 442];
+        let range = Phaser.Math.Between(0, 4);
+        return coordinator[range];
+    }
+
 }

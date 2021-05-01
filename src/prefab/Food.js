@@ -20,9 +20,10 @@ class Food extends Phaser.Physics.Arcade.Sprite {
     }
 
     reset(){
+        let coordinator = [40, 136, 243, 347, 442];
         this.moveSpeed = 4;
-        this.x = this.range(this.lower, this.higher);
-        this.y = this.range(-320, 0);
+        this.x = coordinator[this.range(0, 4)];
+        this.y = this.range(-640, 0);
     }
 
     range(a, b){

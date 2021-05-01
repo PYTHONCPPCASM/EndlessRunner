@@ -22,7 +22,8 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite{
     }
 
     reset(){
-        this.x = this.range(0, 480);
+        let coordinator = [40, 136, 243, 347, 442];
+        this.x = coordinator[this.range(0, 4)];
         this.y = this.range(-960, -320);
     }
 
