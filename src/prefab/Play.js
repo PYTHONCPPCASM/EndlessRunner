@@ -98,7 +98,6 @@ class Play extends Phaser.Scene {
         this.main = this.physics.add.sprite(243,100, 'mouse').setOrigin(0.5);
         
         this.main.anims.play('walk', 30, true);
-
     
         this.Cheese = new Obstacle(this, coordinator[Phaser.Math.Between(0, 4)], -640, 'badCheese', 0);
         this.Cheese2 = new Obstacle(this, coordinator[Phaser.Math.Between(0, 4)], -640, 'badCheese', 0);
@@ -129,7 +128,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 480
           }
-          
+
           this.hint = this.add.text(240, 320, 'press R at any time to restart', textConfig).setOrigin(0.5);
 
           this.time.delayedCall(2300, ()=>{this.hint.destroy();});
@@ -183,7 +182,6 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.main, this.goodCheese3, this.goodCheese3Collide, null, this);
 
         this.physics.world.collide(this.main, this.trap, this.trapCollide, null, this);
-    
         
         if(Phaser.Input.Keyboard.JustDown(keyR)){
             this.music.stop();
@@ -345,7 +343,7 @@ class Play extends Phaser.Scene {
             this.main.y -= 4;
         } else if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
             if(this.cursor == 0){
-                this.cursor = 0;        
+                this.cursor = 0;
             } else {
                 this.cursor--;
             }
@@ -353,7 +351,7 @@ class Play extends Phaser.Scene {
             this.main.x = coordinator[this.cursor];
         } else if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             if(this.cursor == 4){
-                this.curosr = 4;        
+                this.curosr = 4;
             } else {
                 this.cursor++;
             }
